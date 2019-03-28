@@ -1,0 +1,11 @@
+# editor files
+*.swp
+*.idea
+.env
+
+# tmp & log folder
+/tmp
+/log
+
+# dev gems are not versioned
+Gemfile.lock
