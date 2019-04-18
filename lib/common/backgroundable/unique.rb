@@ -15,7 +15,7 @@ module Backgroundable
     def perform *args, &block
       lock = REDLOCK.lock("Backgroundable::Unique/lock/" + self.class.name.to_s, sidekiq_options_hash['lock_timeout'].to_i)
       if !(InfoSig.test? && !$__backgroundable_unique_test) && !lock
-        InfoSig.log.info "execution in progress, quitting"
+        AppLogger.info "execution in progress, quitting"
         return
       end
 

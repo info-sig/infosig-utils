@@ -13,7 +13,7 @@ module ValidationRaisable
 
   module ClassMethods
     def validation_error message
-      if message.is_a?(Dry::Schema::Result)
+      if defined?(Dry::Schema::Result) && message.is_a?(Dry::Schema::Result)
         string = message.errors.inject([]){|sum, x| k,v = x; sum << "#{k}: #{v.join(', ')}"}.join('; ')
         raise self::ValidationError.new(string)
       else
