@@ -1,12 +1,17 @@
 class AppLogger
 
   module Helpers
+    extend ActiveSupport::Concern
     def log
       AppLogger
     end
 
     def D string
       log.debug string
+    end
+
+    module ClassMethods
+      include Helpers
     end
   end
 
