@@ -4,7 +4,11 @@ module Backgroundable
   include Functional
 
   included do
-    include Sidekiq::Worker
+    if defined?(Sidekiq)
+      include Sidekiq::Worker
+    else
+      warn "Sidekiq not loaded"
+    end
   end
 
   def perform *args, &block
