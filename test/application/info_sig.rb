@@ -20,7 +20,11 @@ module InfoSig
   end
 
   def self.pci_dss?
-    @pci_dss = !development_system? || env == :test || !!ENV['PCI_DSS']
+    @pci_dss = !development_system? || env?(:test) || !!ENV['PCI_DSS']
+  end
+
+  def self.env? arg
+    env.to_s == arg.to_s
   end
 
   def self.env
@@ -28,11 +32,11 @@ module InfoSig
   end
 
   def self.development_system?
-    env != :production || !!ENV['DEVELOPMENT_SYSTEM']
+    !env?(:production) || !!ENV['DEVELOPMENT_SYSTEM']
   end
 
   def self.test?
-    env == :test
+    env?(:test)
   end
 
   def self.primary_node?
