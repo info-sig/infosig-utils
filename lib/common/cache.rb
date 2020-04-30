@@ -51,7 +51,7 @@ class Cache
   private
 
   def k(key)
-    @namespace + "/" + key
+    CacheKey[@namespace + "/" + key]
   end
 
 end

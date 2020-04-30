@@ -20,7 +20,9 @@ class ModuleRegistry
 
     if ancestor_klass
       new_modules.each do |k, v|
-        raise(ArgumentError.new("module #{k} must inherit from #{ancestor_klass}")) unless v < ancestor_klass
+        v_class = v
+        v_class = v.class unless v.is_a?(Class) or v.is_a?(Module)
+        raise(ArgumentError.new("module #{k} must inherit from #{ancestor_klass}")) unless v_class < ancestor_klass
       end
     end
 
