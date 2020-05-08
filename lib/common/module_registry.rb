@@ -1,5 +1,8 @@
 class ModuleRegistry
 
+  delegate :each, to: :all
+
+
   attr_accessor :ancestor_klass
 
   def initialize options = {}
