@@ -15,7 +15,7 @@ module TestableSecureRandom
 
   def base64 n = 20
     if faker_active?
-      Base64.encode64(next_seed(n))
+      Base64.strict_encode64(next_seed(n))
     else
       SecureRandom.base64(n)
     end
