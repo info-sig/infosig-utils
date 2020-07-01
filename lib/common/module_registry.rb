@@ -1,6 +1,6 @@
 class ModuleRegistry
 
-  delegate :each, to: :all
+  delegate :each, :empty?, to: :all
 
 
   attr_accessor :ancestor_klass

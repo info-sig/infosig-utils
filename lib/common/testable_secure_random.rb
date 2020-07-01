@@ -29,11 +29,29 @@ module TestableSecureRandom
     end
   end
 
+  def rand int = nil
+    if int
+      if faker_active?
+        Base64.decode64(next_seed).unpack('q*').first.abs % int
+      else
+        Random.rand(int)
+      end
+
+    else
+      if faker_active?
+        rand(10**16).to_f/10**16
+      else
+        Random.rand
+      end
+
+    end
+  end
+
 
   private
 
   def faker_active?
-    ::Rails.env.test? && @faker_active
+    ::InfoSig.env.to_sym == :test && @faker_active
   end
 
   def next_seed(length = 20)
