@@ -29,6 +29,14 @@ module TestableSecureRandom
     end
   end
 
+  def uuid
+    if faker_active?
+      "#{hex(4)}-#{hex(2)}-#{hex(2)}-#{hex(2)}-#{hex(6)}"
+    else
+      SecureRandom.uuid
+    end
+  end
+
   def rand int = nil
     if int
       if faker_active?
