@@ -4,5 +4,6 @@ class EnforceType
     unless types.include?(object.class)
       raise ArgumentError.new("expected a #{types.join(', ')}, got #{object.class}: #{object.inspect}")
     end
+    object
   end
 end
