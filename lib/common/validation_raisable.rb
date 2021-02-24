@@ -34,5 +34,6 @@ module ValidationRaisable
     self.class.validate!(*args, &block)
   end
 
-
+  
+  extend ClassMethods
 end
