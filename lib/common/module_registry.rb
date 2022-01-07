@@ -39,4 +39,12 @@ class ModuleRegistry
     rv
   end
 
+  def remove registry_module
+    @all.delete(registry_module.to_s)
+  end
+
+  def truncate
+    @all = {}
+  end
+
 end
