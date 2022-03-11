@@ -94,7 +94,11 @@ class AppLogger
     end
 
     string.split("\n").each do |line|
-      file.puts "[#{msg_log_level}] #{line}"
+      if file == STDOUT
+        puts "[#{msg_log_level}] #{line}"
+      else
+        file.puts "[#{msg_log_level}] #{line}"
+      end
     end
 
     nil
