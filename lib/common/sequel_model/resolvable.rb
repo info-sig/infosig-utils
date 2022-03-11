@@ -28,7 +28,7 @@ if defined?(Sequel::Model)
             elsif obj.class == String
               rv = where(logid: obj).pluck(:id).first
             elsif obj.class == Integer
-              rv = id
+              rv = obj
             end
             if !rv && options[:raise]
               raise Unresolvable.new("can't resolve #{obj.class} #{obj.inspect}")
