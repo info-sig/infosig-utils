@@ -2,7 +2,7 @@ class AppLogger
   attr_accessor :file
 
   def initialize opts = {}
-    @file = opts[:file] || STDOUT
+    @file = opts[:file]
   end
 
   module Helpers
@@ -94,7 +94,11 @@ class AppLogger
     end
 
     string.split("\n").each do |line|
-      file.puts "[#{msg_log_level}] #{line}"
+      if file
+        file.puts "[#{msg_log_level}] #{line}"
+      else
+        puts "[#{msg_log_level}] #{line}"
+      end
     end
 
     nil
