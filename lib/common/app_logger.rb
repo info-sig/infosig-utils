@@ -1,4 +1,9 @@
 class AppLogger
+  attr_accessor :file
+
+  def initialize opts = {}
+    @file = opts[:file]
+  end
 
   module Helpers
     extend ActiveSupport::Concern
@@ -16,7 +21,7 @@ class AppLogger
   end
 
   class << self
-    delegate :log, :info, :error, :debug, :warn,
+    delegate :log, :info, :error, :debug, :warn, :file, :close,
       to: :_instance
   end
 
@@ -64,6 +69,10 @@ class AppLogger
     nil
   end
 
+  def close
+    file.close unless file == STDOUT
+  end
+
   private
 
   def self._instance
@@ -85,7 +94,11 @@ class AppLogger
     end
 
     string.split("\n").each do |line|
-      puts "[#{msg_log_level}] #{line}"
+      if file
+        file.puts "[#{msg_log_level}] #{line}"
+      else
+        puts "[#{msg_log_level}] #{line}"
+      end
     end
 
     nil
