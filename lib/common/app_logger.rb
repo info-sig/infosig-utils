@@ -95,7 +95,9 @@ class AppLogger
 
     string.split("\n").each do |line|
       if file
-        file.puts "[#{msg_log_level}] #{line}"
+        File.open(file, 'a') { |f|
+          f.puts "[#{msg_log_level}] #{line}"
+        }
       else
         puts "[#{msg_log_level}] #{line}"
       end
