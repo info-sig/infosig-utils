@@ -38,7 +38,7 @@ class Cache
           redis.expire(k(key), expire_in.to_i)
         end
         idx += 1
-      end until redis.exists(k(key))
+      end until redis.exists(k(key)) != 0
     end
 
     value
