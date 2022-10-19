@@ -24,17 +24,17 @@ class RetryerTest < UnitTest
       end
     end
 
-    assert_includes logs, 'retry 3 of 3', 'number of retires is off.'
+    assert_includes logs, 'retry 2 of 2', 'number of retires is off.'
   end
 
   def test_retries_for_given_number_of_times
     _, logs = capture_io do
       assert_raise Exception do
-        Retryer.call({repeats: 2}) { throw('wee:)') }
+        Retryer.call({repeats: 5}) { throw('wee:)') }
       end
     end
 
-    assert_includes logs, 'retry 2 of 2', 'number of retires is off.'
+    assert_includes logs, 'retry 5 of 5', 'number of retires is off.'
   end
 
   def test_produces_log_for_each_retry
@@ -44,9 +44,8 @@ class RetryerTest < UnitTest
       end
     end
 
-    expected_logs = 'UncaughtThrowError: uncaught throw "wee:)", retry 1 of 3
-UncaughtThrowError: uncaught throw "wee:)", retry 2 of 3
-UncaughtThrowError: uncaught throw "wee:)", retry 3 of 3
+    expected_logs = 'UncaughtThrowError: uncaught throw "wee:)", retry 1 of 2
+UncaughtThrowError: uncaught throw "wee:)", retry 2 of 2
 '
     assert_equal expected_logs, logs, 'logs are off.'
   end
