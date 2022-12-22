@@ -12,18 +12,7 @@ module Backgroundable
   end
 
   def perform *args, &block
-    opts = ExtractOptions[args, bang: true]
-    rv = call(*args, &block)
-    return rv unless opts[:sidekiq_future]
-
-    uuid = calculate_job_id(opts[:future_uuid])
-    timeout = opts[:sidekiq_future_timeout] || 10
-
-    REDIS.with do |redis|
-      redis.setex("RedisFuture/#{uuid}", timeout, rv.to_json)
-    end
-
-    rv
+    call(*args, &block)
   end
 
   module ClassMethods

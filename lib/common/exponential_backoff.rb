@@ -22,6 +22,7 @@ class ExponentialBackoff
 
     until total_sleep >= opts[:timeout]
       rv = wrap_yield(ctx){ yield }
+      # puts "rv: #{rv.inspect} \t\t sleep: #{next_sleep} #{total_sleep}/#{opts[:max_sleep]}"
       return rv unless rv.is_a?(FailedExecution)
 
       sleep next_sleep
