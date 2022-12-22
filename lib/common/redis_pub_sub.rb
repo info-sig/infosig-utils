@@ -5,10 +5,12 @@ module RedisPubSub
   def self.publish key, value, opts = {}
     opts = opts.with_indifferent_access
     timeout = opts[:timeout] || 10
+    EnforceType[timeout, Fixnum]
     redis_key = CacheKey[key]
     json_msg = value.to_json
 
     REDIS.with do |redis|
+      # puts "redis.setex(#{redis_key}, #{timeout}, #{json_msg})"
       redis.setex(redis_key, timeout, json_msg)
     end
   end

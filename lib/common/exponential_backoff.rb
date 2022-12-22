@@ -30,7 +30,7 @@ class ExponentialBackoff
       total_sleep += next_sleep
       next_sleep = [next_sleep*1.5, opts[:max_sleep]].min
       if total_sleep + next_sleep > opts[:timeout]
-        next_sleep = total_sleep + next_sleep - opts[:max_sleep]
+        next_sleep = total_sleep + next_sleep - opts[:timeout]
       end
     end
 

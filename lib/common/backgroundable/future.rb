@@ -14,10 +14,12 @@ module Backgroundable
       RUBY
     end
 
-    def perform *args, &block
+    def perform *args
       opts = ExtractOptions[args]
-      rv = call(*args, &block)
+      rv = call(*args)
+      # puts "RedisPubSub.publish(\"Backgroundable::Future/#{jid}\", #{rv}, #{opts})"
       RedisPubSub.publish("Backgroundable::Future/#{jid}", rv, opts)
+      rv
     end
 
 
@@ -27,7 +29,10 @@ module Backgroundable
         opts = ExtractOptions[args]
         jid = perform_async *args
         Concurrent::Future.execute do
-          RedisPubSub.subscribe("Backgroundable::Future/#{jid}", opts)
+          # puts "RedisPubSub.subscribe(\"Backgroundable::Future/#{jid}\", #{opts})"
+          rv = RedisPubSub.subscribe("Backgroundable::Future/#{jid}", opts)
+          # puts "    #{jid} rv=#{rv}"
+          rv
         end
       end
 
