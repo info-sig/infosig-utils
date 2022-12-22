@@ -3,6 +3,7 @@ module RedisPubSub
   class NoAnswerException < RuntimeError; end
 
   def self.publish key, value, opts = {}
+    opts = opts.with_indifferent_access
     timeout = opts[:timeout] || 10
     redis_key = CacheKey[key]
     json_msg = value.to_json

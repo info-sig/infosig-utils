@@ -3,11 +3,12 @@ module RedisPubSub
     extend ClassFunctional
     # include ValidationRaisable
 
-    def self.call key, options = {}
+    def self.call key, opts = {}
+      opts = opts.with_indifferent_access
       clean_redis = true
-      timeout = options.delete(:timeout) || 10
-      nil_on_timeout = options.delete(:nil_on_timeout)
-      max_sleep = options.delete(:max_sleep) || 2
+      timeout = opts.delete(:timeout) || 10
+      nil_on_timeout = opts.delete(:nil_on_timeout)
+      max_sleep = opts.delete(:max_sleep) || 2
       redis_key = CacheKey[key]
 
       # Step 1: do we have something already persisted?

@@ -1,5 +1,6 @@
 require "minitest/autorun"
 require "rack/test"
+require 'sidekiq/testing'
 $PARALLEL_EXECUTION = false
 require_relative 'helpers/parallel_executor' if ENV['PARALLEL']
 
