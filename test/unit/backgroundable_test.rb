@@ -59,7 +59,7 @@ class BackgroundableTest < UnitTest
     # Scenario 1: task takes longer to finish than the timeout parameter - and raises an exception as rejected
     rv = SomeWorker::Future.execute(timeout: 1)
     Concurrent::Future.execute{ sleep 1.5; Sidekiq::Worker.drain_all }
-    assert_raises(TimeoutError){ rv.value! }
+    assert_raises(Timeout::Error){ rv.value! }
 
     # Scenario 2: task takes shorter to finish than the timeout parameter - and returns a value
     rv = SomeWorker::Future.execute(timeout: 1)
