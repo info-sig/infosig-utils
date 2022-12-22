@@ -53,6 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  concurrent-ruby
   infosig-utils!
   m (~> 1.5.0)
   minitest
@@ -67,7 +68,7 @@ DEPENDENCIES
   timecop
 
 RUBY VERSION
-   ruby 2.6.3p62
+   ruby 2.7.6p219
 
 BUNDLED WITH
    2.3.12
