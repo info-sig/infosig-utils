@@ -9,7 +9,7 @@ if defined?(Sequel::Model)
         dataset_module do
           def resolve obj, options = {}
             if obj.class == model
-              rv = obj.reload
+              rv = obj
             elsif obj.class == String
               rv = where(logid: obj).first
             elsif obj.class == Integer
