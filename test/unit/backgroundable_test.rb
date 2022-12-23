@@ -15,21 +15,24 @@ class BackgroundableTest < UnitTest
     def self.increment_counter
       @@counter = @@counter + 1
     end
+    delegate :increment_counter, to: 'self.class'
 
     def self.counter
       @@counter
     end
+    delegate :counter, to: 'self.class'
 
     def call options = {}
       raise TestException if options[:exception]
-      self.class.increment_counter
+      increment_counter
       sleep(options[:sleep].to_f) if options[:sleep]
-      self.class.counter
+      counter
     end
   end
 
   setup do
     $__backgroundable_unique_test = true
+    Sidekiq::Worker.clear_all
     SomeWorker.counter = SomeWorker::Future.counter = 0
   end
 
@@ -43,7 +46,7 @@ class BackgroundableTest < UnitTest
   end
 
   def test_future_job_is_done
-    rv = SomeWorker::Future.execute
+    rv = SomeWorker::Future.execute(:call)
     assert_equal Concurrent::Future, rv.class, 'SomeWorker::Future is wrong type'
 
     act = rv.value(0.00001)
@@ -57,16 +60,24 @@ class BackgroundableTest < UnitTest
 
   def test_timeouts_work_as_expected_on_futures
     # Scenario 1: task takes longer to finish than the timeout parameter - and raises an exception as rejected
-    rv = SomeWorker::Future.execute(timeout: 1)
+    rv = SomeWorker::Future.execute(:call, timeout: 1)
     Concurrent::Future.execute{ sleep 1.5; Sidekiq::Worker.drain_all }
     assert_raises(Timeout::Error){ rv.value! }
 
     # Scenario 2: task takes shorter to finish than the timeout parameter - and returns a value
-    rv = SomeWorker::Future.execute(timeout: 1)
+    rv = SomeWorker::Future.execute(:call, timeout: 1)
     Sidekiq::Worker.drain_all
     act = rv.value!
     assert_equal 2, SomeWorker::Future.counter, 'expected the job to be successful - as well as the one from before - beware of this'
     assert_equal 2, act, 'expected the job to return a value'
+
+    # Scenario 3: different method
+    rv = SomeWorker::Future.execute(:increment_counter, timeout: 1)
+    Sidekiq::Worker.drain_all
+    act = rv.value!
+    assert_equal 3, SomeWorker::Future.counter, 'expected the job to be successful - as well as the one from before - beware of this'
+    assert_equal 3, act, 'expected the job to return a value'
+
   end
 
   def test_job_fail
