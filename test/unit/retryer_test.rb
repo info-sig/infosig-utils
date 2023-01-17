@@ -52,8 +52,10 @@ UncaughtThrowError: uncaught throw "wee:)", retry 3 of 3
   end
 
   def test_raises_exception_after_max_retires
-    assert_raise Exception do
-      Retryer.call { throw('wee:)') }
+    capture_io do
+      assert_raise Exception do
+        Retryer.call { throw('wee:)') }
+      end
     end
   end
 end
