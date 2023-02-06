@@ -25,7 +25,7 @@ class AppLogger
       to: :_instance
   end
 
-  cattr_accessor :log_level
+  cattr_accessor :log_level, :log_message
   #delegate :log_level, to: 'self.class'
 
   # !!!! NOT FOR PRODUCTION USE !!!!
@@ -35,6 +35,19 @@ class AppLogger
     yield
   ensure
     self.log_level = old_log_level
+  end
+
+  def self.filtered_log_level log_lvl_msg_array
+    raise ArgumentError.new("Array must contain exactly 2 elements") if log_lvl_msg_array.length != 2
+    raise ArgumentError.new("First element must be one of the following: #{LOG_LEVELS.keys}") if !LOG_LEVELS.has_key?(log_lvl_msg_array[0])
+
+    old_log_level = self.log_level
+    self.log_level = log_lvl_msg_array[0]
+    self.log_message = log_lvl_msg_array[1]
+    yield
+  ensure
+    self.log_level = old_log_level
+    self.log_message = nil
   end
 
   LOG_LEVELS = {
@@ -63,7 +76,11 @@ class AppLogger
 
   def log log_level, *args
     args.each do |object|
-      log_object log_level, object
+      if log_message.nil?
+        log_object log_level, object
+      else
+        log_filtered_object log_level, object, log_message
+      end
     end
 
     nil
@@ -83,6 +100,18 @@ class AppLogger
   def log_object msg_log_level, object
     return nil if numeric_log_level(msg_log_level) > numeric_log_level(log_level)
 
+    log_stout object, msg_log_level
+    nil
+  end
+
+  def log_filtered_object msg_log_level, object, log_message
+    return nil if numeric_log_level(msg_log_level) == numeric_log_level(log_level) && object.include?(log_message)
+
+    log_stout object, msg_log_level
+    nil
+  end
+
+  def log_stout object, msg_log_level
     string = if object.is_a?(Exception)
       "#{object.class} #{object.message}\n#{object.backtrace.join("\n")}"
     elsif object.is_a? String
