@@ -2,37 +2,44 @@ require 'test_helpers'
 
 class AppLoggerTest < UnitTest
 
-  def test_filtered_log_level_array_size
-    assert_raises ArgumentError do |exception|
-      AppLogger.filtered_log_level([:one_element])
-      assert_equal exception, 'Array must contain exactly 2 elements'
+  def test_filtered_log_level_only_one_element
+    exception = assert_raises ArgumentError do
+      AppLogger.filtered_log_level(:error)
     end
+    assert_equal "There must be at least 2 elements present", exception.message
   end
 
-  def test_filtered_log_level_error_element
-    assert_raises ArgumentError do |exception|
-      AppLogger.filtered_log_level([:weird_error, 'Error message'])
-      assert_equal exception, "First element must be one of the following: #{LOG_LEVELS.keys}"
+  def test_filtered_log_level_text_error
+    exception = assert_raises ArgumentError do
+      AppLogger.filtered_log_level(:error, :no_string_message)
     end
+    assert_equal "Last element must be a string message", exception.message
+  end
+
+  def test_filtered_log_level_wrong_error_element
+    exception = assert_raises ArgumentError do
+      AppLogger.filtered_log_level(:one_element, 'Some error message')
+    end
+    assert_equal "First element must be one of the following: #{AppLogger::LOG_LEVELS.keys}", exception.message
   end
 
   def test_filtered_log_level_wrong_message
     output, _ = capture_io do
-      AppLogger.filtered_log_level([:error, 'Test message']) do
+      AppLogger.filtered_log_level(:error, 'Wrong message') do
         begin
-          raise ArgumentError.new 'Test'
+          raise ArgumentError.new 'Actual message'
         rescue Exception => e
           mock_backtrace e, :error
         end
       end
     end
 
-    assert_equal true, output.include?("[error] ArgumentError Test\n")
+    assert_equal true, output.include?("Actual message")
   end
 
   def test_filtered_log_level_wrong_severity
     output, _ = capture_io do
-      AppLogger.filtered_log_level([:error, 'Test message']) do
+      AppLogger.filtered_log_level(:error, 'Test message') do
         begin
           raise ArgumentError.new 'Test message'
         rescue Exception => e
@@ -41,9 +48,55 @@ class AppLoggerTest < UnitTest
       end
     end
 
-    assert_equal true, output.include?("[warn] ArgumentError Test message\n")
+    assert_equal true, output.include?("[warn] ArgumentError Test message")
   end
 
+  def test_filtered_log_level_with_multiple_correct_severities
+    output, _ = capture_io do
+      AppLogger.filtered_log_level(:error, :debug, 'Test message') do
+        begin
+          raise ArgumentError.new 'Test message'
+        rescue Exception => e
+          mock_backtrace e, :debug
+          mock_backtrace e, :error
+        end
+      end
+    end
+
+    assert_equal true, output.include?("")
+  end
+
+  def test_filtered_log_level_with_multiple_severities_incorrect
+    output, _ = capture_io do
+      AppLogger.filtered_log_level(:error, :debug, 'Test message') do
+        begin
+          raise ArgumentError.new 'Test message'
+        rescue Exception => e
+          mock_backtrace e, :info
+          mock_backtrace e, :error
+        end
+      end
+    end
+
+    assert_equal true, output.include?("[info] ArgumentError Test message")
+  end
+
+
+  def test_filtered_log_level_change_log_level_to_array
+    output, _ = capture_io do
+      AppLogger.stub(:log_level, :error) do
+        AppLogger.filtered_log_level(:error, 'Test message') do
+          begin
+            raise ArgumentError.new 'Test message'
+          rescue Exception => e
+            mock_backtrace e, :error
+          end
+        end
+      end
+    end
+
+    assert_equal true, output.include?("")
+  end
 
 private
 
