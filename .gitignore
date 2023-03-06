@@ -3,9 +3,9 @@
 *.idea
 .env
 
+Gemfile.lock
+
 # tmp & log folder
 /tmp
 /log
 
-# dev gems are not versioned
-Gemfile.lock

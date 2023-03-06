@@ -6,6 +6,7 @@ module Backgroundable
   included do
     if defined?(Sidekiq)
       include Sidekiq::Worker
+      include Futuristic
     else
       warn "Sidekiq not loaded"
     end
@@ -28,6 +29,5 @@ module Backgroundable
       end
     end
   end
-
 
 end

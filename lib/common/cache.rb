@@ -37,8 +37,9 @@ class Cache
           redis.set(k(key), value)
           redis.expire(k(key), expire_in.to_i)
         end
+
         idx += 1
-      end until redis.exists(k(key))
+      end until redis_key_exists?(redis, k(key))
     end
 
     value
@@ -57,6 +58,14 @@ class Cache
 
   def k(key)
     CacheKey[@namespace + "/" + key]
+  end
+
+  # this function is needed for legacy compatibility
+  def redis_key_exists?(redis, key)
+    rv_class = redis.exists(key).class
+    return redis.exists(key) if [TrueClass, FalseClass].include? rv_class
+
+    return redis.exists(key) != 0
   end
 
 end
