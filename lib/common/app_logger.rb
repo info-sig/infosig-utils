@@ -2,7 +2,9 @@ class AppLogger
   attr_accessor :file
 
   def initialize opts = {}
-    @file = opts[:file]
+    if opts[:file]
+      @file = File.open(opts[:file], 'a')
+    end
   end
 
   module Helpers
