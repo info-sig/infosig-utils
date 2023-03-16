@@ -1,10 +1,8 @@
 class Retryer
   extend ClassFunctional
 
-  def self.call options = {}, &block
-    repeats = options[:repeats] || 3
-    sleeps  = options[:sleeps]  || 0.seconds
-
+  def self.call(options = {}, &block)
+    repeats, sleeps = repeats_sleeps options
     count = 0
     rv = {}
     while count < repeats
@@ -17,10 +15,13 @@ class Retryer
     raise rv[:exception]
   end
 
+  def self.repeats_sleeps(options)
+    return options[:repeats] || 2, options[:sleeps] || 0.seconds
+  end
 
   private
 
-  def self.retry_once &block
+  def self.retry_once(&block)
     {
       rv: block.call,
       status: 'OK'
