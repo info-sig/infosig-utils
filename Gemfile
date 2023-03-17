@@ -11,7 +11,7 @@ group :development, :test do
   gem 'pry'
   gem 'activesupport', require: false
   # gem 'sidekiq-scheduler'
-  gem 'sidekiq'
+  gem 'sidekiq', '~> 6'
   gem 'sequel'
   gem 'ramda-ruby'
   gem 'redlock'
