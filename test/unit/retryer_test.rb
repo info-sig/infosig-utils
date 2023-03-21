@@ -24,7 +24,7 @@ class RetryerTest < UnitTest
       end
     end
 
-    assert_includes logs, 'retry 2 of 2', 'number of retires is off.'
+    assert_includes logs, 'retry 2 of 2', 'number of retries is off.'
   end
 
   def test_retries_for_given_number_of_times
@@ -34,7 +34,7 @@ class RetryerTest < UnitTest
       end
     end
 
-    assert_includes logs, 'retry 3 of 3', 'number of retires is off.'
+    assert_includes logs, 'retry 3 of 3', 'number of retries is off.'
   end
 
   def test_produces_log_for_each_retry
@@ -56,5 +56,15 @@ UncaughtThrowError: uncaught throw "wee:)", retry 2 of 2
         Retryer.call { throw('wee:)') }
       end
     end
+  end
+
+  def test_sleeps_for_a_given_duration
+    start_time = Time.now
+    assert_raise Exception do
+      Retryer.call({repeats: 2, sleeps: 1}) { throw('wee:)') }
+    end
+    end_time = Time.now
+    elapsed_time = end_time - start_time
+    assert_operator elapsed_time, :>=, 2, "Code did not take at least 2 seconds to execute"
   end
 end
