@@ -1,5 +1,5 @@
 module InfoSigUtils
-  VERSION='1.0.3'
+  VERSION='1.0.4'
   ROOT = File.dirname(__FILE__)
 end
 
