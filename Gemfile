@@ -30,6 +30,7 @@ group :test do
   # gem 'vcr'
   gem 'm', '~> 1.5.0'
   # gem 'timecop'
+  gem 'redis-namespace', '~> 1.10'
 end
 
 gemspec
