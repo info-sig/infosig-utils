@@ -4,6 +4,7 @@ lib = 'infosig-utils'
 lib_file = File.expand_path("../lib/#{lib}.rb", __FILE__)
 File.read(lib_file) =~ /\bVERSION\s*=\s*["'](.+?)["']/
 version = Regexp.last_match(1)
+$LOAD_PATH.unshift(File.expand_path("../../test", __FILE__))
 
 Gem::Specification.new do |spec|
   spec.name    = lib
