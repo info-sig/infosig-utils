@@ -5,13 +5,14 @@ source 'https://rubygems.org'
 ruby RUBY_VERSION
 
 gem 'rake'
-gem 'timecop'
+
 
 group :development, :test do
   gem 'pry'
   gem 'activesupport', '~> 6.0.3', '>= 6.0.3.7'
   # gem 'sidekiq-scheduler'
-  gem 'sidekiq', '~> 6'
+  # gem 'sidekiq', '~> 6'
+  gem 'sidekiq', '~> 6.5.8'
   gem 'sequel'
   gem 'ramda-ruby'
   gem 'redlock'
@@ -29,7 +30,7 @@ group :test do
   # gem "webmock"
   # gem 'vcr'
   gem 'm', '~> 1.5.0'
-  # gem 'timecop'
+  gem 'timecop'
 end
 
 gemspec

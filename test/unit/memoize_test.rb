@@ -1,4 +1,5 @@
 require "test_helpers"
+require 'timecop'
 
 class MemoizeTest < UnitTest
 
