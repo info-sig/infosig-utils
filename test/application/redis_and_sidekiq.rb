@@ -1,6 +1,5 @@
 redis_conn = proc {
-  # Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379/3', namespace: "InfoSig/#{RACK_ENV}") # do anything you want here
-  Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379/3', id: "InfoSig/#{RACK_ENV}") # do anything you want here
+  Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379/3', namespace: "InfoSig/#{RACK_ENV}") # do anything you want here
 }
 
 Sidekiq.configure_client do |config|
