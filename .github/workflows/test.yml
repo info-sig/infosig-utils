@@ -36,3 +36,9 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
       run: bundle exec rake
+
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379/tcp
