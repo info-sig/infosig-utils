@@ -20,6 +20,13 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+
     strategy:
       matrix:
         ruby-version: ['2.7']
@@ -35,10 +42,7 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
+      env:
+        REDIS_URL: redis://localhost:6379
       run: bundle exec rake
 
-    services:
-      redis:
-        image: redis
-        ports:
-          - 6379/tcp
