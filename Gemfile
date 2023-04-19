@@ -9,7 +9,7 @@ gem 'timecop'
 
 group :development, :test do
   gem 'pry'
-  gem 'activesupport', require: false
+  gem 'activesupport', '~> 6.0.3', '>= 6.0.3.7'
   # gem 'sidekiq-scheduler'
   gem 'sidekiq', '~> 5'
   gem 'sequel'
