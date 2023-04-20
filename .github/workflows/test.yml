@@ -41,4 +41,4 @@ jobs:
     - name: Run tests
       env:
         REDIS_URL: redis://localhost:6379
-      run: bundle exec rake
+      run: bundle exec rake RACK_ENV=test
