@@ -35,7 +35,7 @@ class UnitTest < MiniTest::Spec
 
   before do
     Thread.current[:test_run_uid] = @test_run_uid = self.class.to_s.underscore + "/" + name.gsub(/^test_[0-9]+_/, 'test_it_') + "/" + SecureRandom.hex
-    $test_run_uid = SecureRandom.uuid.freeze
+    $test_run_uid ||= SecureRandom.uuid
   end
 
   after do
