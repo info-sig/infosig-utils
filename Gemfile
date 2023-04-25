@@ -9,21 +9,19 @@ gem 'timecop'
 
 group :development, :test do
   gem 'pry'
-  gem 'activesupport', require: false
+  gem 'activesupport', '~> 6.0.3', '>= 6.0.3.7'
   # gem 'sidekiq-scheduler'
-  gem 'sidekiq', '~> 6'
+  gem 'sidekiq', '~> 5'
   gem 'sequel'
   gem 'ramda-ruby'
-  gem 'redlock'
-
   gem 'concurrent-ruby'
+  gem 'redlock', '~> 1' # version 1 is needed for tests to pass
 end
 
 group :test do
   gem 'minitest'
   gem 'minitest-parallel_fork', require: false
   gem 'rack-test'
-
   gem 'concurrent-ruby'
 
   # gem "webmock"
