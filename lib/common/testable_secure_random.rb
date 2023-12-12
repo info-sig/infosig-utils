@@ -2,6 +2,7 @@ module TestableSecureRandom
 
   cattr_accessor :seed, :scope
 
+  # TODO: scope ended up being totally useless in hindsight
   def make_deterministic! scope
     @faker_active = true
     self.seed = 0
