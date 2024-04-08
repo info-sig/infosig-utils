@@ -1,13 +1,13 @@
 class Retryer
   extend ClassFunctional
 
-  def self.call(options = {}, &block)
+  def self.call(options = {})
     no_of_repeats, sleep_duration = no_of_repeats_and_sleep_duration(options)
 
     count = 0
     rv = {}
     while count < no_of_repeats
-      rv = retry_once(&block)
+      rv = retry_once { yield }
       return rv[:rv] if rv[:status] == 'OK'
       count = count + 1
       warn "#{rv[:exception].class}: #{rv[:exception].message}, retry #{count} of #{no_of_repeats}"
@@ -21,9 +21,9 @@ class Retryer
     return options[:repeats] || 2, options[:sleeps] || 0.seconds
   end
 
-  def self.retry_once(&block)
+  def self.retry_once
     {
-      rv: block.call,
+      rv: yield,
       status: 'OK'
     }
   rescue Exception => e
