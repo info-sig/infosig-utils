@@ -9,6 +9,10 @@ if defined?(Redlock)
       with_client{ |client| client.unlock(*args, &block) }
     end
 
+    def locked? *args, &block
+      with_client{ |client| client.locked?(*args, &block)}
+    end
+
     private
 
     def with_client
