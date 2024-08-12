@@ -9,9 +9,9 @@ gem 'timecop'
 
 group :development, :test do
   gem 'pry'
-  gem 'activesupport', '~> 6.0.3', '>= 6.0.3.7'
+  gem 'activesupport', '~> 6.1'
   # gem 'sidekiq-scheduler'
-  gem 'sidekiq', '~> 5'
+  gem 'sidekiq', '~> 6'
   gem 'sequel'
   gem 'ramda-ruby'
   gem 'concurrent-ruby'
