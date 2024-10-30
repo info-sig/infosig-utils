@@ -6,6 +6,7 @@ ruby RUBY_VERSION
 
 gem 'rake'
 gem 'timecop'
+gem 'request_store'
 
 group :development, :test do
   gem 'pry'
@@ -22,7 +23,6 @@ group :test do
   gem 'minitest'
   gem 'minitest-parallel_fork', require: false
   gem 'rack-test'
-  gem 'concurrent-ruby'
 
   # gem "webmock"
   # gem 'vcr'

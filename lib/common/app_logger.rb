@@ -93,11 +93,13 @@ class AppLogger
       "#{object.class} #{object.to_s}"
     end
 
-    string.split("\n").each do |line|
+    request_uuid = RequestStore.store[:correlation_id]
+    string.split("\n").each_with_index do |line, index|
+      output_line = index == 0 && !request_uuid.nil? ? "[#{msg_log_level} - #{request_uuid}] #{line}" : "[#{msg_log_level}] #{line}"
       if file
-        file.puts "[#{msg_log_level}] #{line}"
+        file.puts output_line
       else
-        puts "[#{msg_log_level}] #{line}"
+        puts output_line
       end
     end
 
