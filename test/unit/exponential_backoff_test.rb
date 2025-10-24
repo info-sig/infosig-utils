@@ -5,6 +5,7 @@ class ExponentialBackoffTest < UnitTest
   parallelize_me!
 
   setup do
+    Timecop.return
   end
 
   def test_basic_sync_use

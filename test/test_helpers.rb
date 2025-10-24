@@ -1,7 +1,3 @@
-require "logger"
-require 'active_support'
-require 'active_support/core_ext'
-
 require "minitest/autorun"
 require "rack/test"
 require 'sidekiq/testing'
