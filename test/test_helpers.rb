@@ -1,3 +1,7 @@
+require "logger"
+require 'active_support'
+require 'active_support/core_ext'
+
 require "minitest/autorun"
 require "rack/test"
 require 'sidekiq/testing'
@@ -10,7 +14,7 @@ require_relative '../lib/infosig-utils'
 # Load the App in the appropriate ENV
 ENV['RACK_ENV'] = 'test'
 
-class UnitTest < MiniTest::Spec
+class UnitTest < Minitest::Spec
 
   require_relative "helpers/minitest_dyslexia_helper"
   include MinitestDyslexiaHelper
