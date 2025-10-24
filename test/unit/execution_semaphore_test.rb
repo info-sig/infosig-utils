@@ -6,7 +6,7 @@ class ExecutionSemaphoreTest < UnitTest
 
   setup do
     @storage = [ InMemoryStorage.new, REDIS ].sample
-    @semaphore = ExecutionSemaphore.new(@storage, CacheKey["test_semaphore_#{SecureRandom.hex}"])
+    @semaphore = ExecutionSemaphore.new(@storage, "test_semaphore")
   end
 
   def test_basic_increment_decrement
@@ -51,7 +51,7 @@ class ExecutionSemaphoreTest < UnitTest
   end
 
   def test_max_entries_with_exception
-    semaphore = ExecutionSemaphore.new(@storage, "limited_semaphore-#{SecureRandom.hex}", max_entries: 2)
+    semaphore = ExecutionSemaphore.new(@storage, "limited_semaphore", max_entries: 2)
     
     semaphore.inc
     assert_equal 1, semaphore.current_count, "[#{@storage.class.name}] Count should be 1"
@@ -67,7 +67,7 @@ class ExecutionSemaphoreTest < UnitTest
   end
 
   def test_max_entries_with_skip
-    semaphore = ExecutionSemaphore.new(@storage, "skip_semaphore_#{SecureRandom.hex}", max_entries: 1)
+    semaphore = ExecutionSemaphore.new(@storage, "skip_semaphore", max_entries: 1)
     
     result1 = semaphore.with_semaphore do
       "first execution"
@@ -113,7 +113,7 @@ class ExecutionSemaphoreTest < UnitTest
   end
 
   def test_expiry
-    semaphore = ExecutionSemaphore.new(@storage, "expiring_semaphore_#{SecureRandom.hex}", expiry: 1)
+    semaphore = ExecutionSemaphore.new(@storage, "expiring_semaphore", expiry: 1)
     
     semaphore.inc
     assert_equal 1, semaphore.current_count, "[#{@storage.class.name}] Count should be 1"

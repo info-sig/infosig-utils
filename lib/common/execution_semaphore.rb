@@ -8,7 +8,7 @@ class ExecutionSemaphore
   # @param expiry [Integer, nil] Optional TTL for the counter in seconds
   def initialize(storage, key, options = {})
     @storage = storage
-    @key = key
+    @key = CacheKey[key]
     @max_entries = options[:max_entries]
     @expiry = options[:expiry]  || 1.day
   end
