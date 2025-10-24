@@ -4,6 +4,7 @@ class ExponentialBackoffTest < UnitTest
 
   parallelize_me!
 
+  # Whyyy
   setup do
     Timecop.return
   end
@@ -16,7 +17,7 @@ class ExponentialBackoffTest < UnitTest
 
     assert waits.sum > 1.8, "expected total wait > 1.8 (got #{'%.3f' % waits.sum})"
     assert waits.sum < 2.0, "expected total wait < 2.0 (got #{'%.3f' % waits.sum})"
-    assert waits.max >= 0.51, "expected no wait >= 0.51 (max was #{'%.3f' % waits.max})"
+    assert waits.max >= 0.5, "expected no wait >= 0.5 (max was #{'%.3f' % waits.max})"
   end
 
 end

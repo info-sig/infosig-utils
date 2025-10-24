@@ -40,6 +40,7 @@ class UnitTest < Minitest::Spec
 
   after do
     $pry = false
+    Timecop.return
   end
 
   def self.skip_stress_tests?
