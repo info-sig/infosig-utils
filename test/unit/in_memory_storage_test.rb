@@ -43,8 +43,6 @@ class InMemoryStorageTest < UnitTest
     Timecop.travel(Time.now + 1.1) # Wait for expiry
     
     assert_nil @storage.get("expiring_key"), "Value should be nil after expiry"
-  ensure
-    Timecop.return
   end
 
   def test_expire_with_multiple_keys
@@ -57,8 +55,6 @@ class InMemoryStorageTest < UnitTest
     
     assert_nil @storage.get("key1"), "key1 should be nil after expiry"
     assert_equal "value2", @storage.get("key2"), "key2 should still exist"
-  ensure
-    Timecop.return
   end
 
   def test_nonexistent_key_expire
