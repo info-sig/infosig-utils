@@ -10,7 +10,7 @@ require_relative '../lib/infosig-utils'
 # Load the App in the appropriate ENV
 ENV['RACK_ENV'] = 'test'
 
-class UnitTest < MiniTest::Spec
+class UnitTest < Minitest::Spec
 
   require_relative "helpers/minitest_dyslexia_helper"
   include MinitestDyslexiaHelper
@@ -40,6 +40,7 @@ class UnitTest < MiniTest::Spec
 
   after do
     $pry = false
+    Timecop.return
   end
 
   def self.skip_stress_tests?

@@ -27,6 +27,9 @@ require 'sidekiq'
 # require 'sidekiq-scheduler'
 
 require 'active_support/cache'
+require "logger"
+require 'active_support'
+require 'active_support/core_ext'
 require 'active_support/core_ext/hash'
 require 'active_support/core_ext/enumerable'
 require 'active_support/concern'
