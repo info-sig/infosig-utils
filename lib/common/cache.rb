@@ -1,6 +1,8 @@
+require 'active_support/core_ext/numeric/time'
+
 class Cache
 
-  DEFAULT_EXPIRE_IN = 15.minutes.to_i
+  DEFAULT_EXPIRE_IN = 15.minute.to_i
 
   attr_reader :redis
 

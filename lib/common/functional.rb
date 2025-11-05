@@ -1,6 +1,9 @@
 module Functional
   extend ActiveSupport::Concern
 
+  require 'active_support/core_ext/module/delegation'
+
+
   def method_call
     method(:call)
   end

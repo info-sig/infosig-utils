@@ -1,8 +1,17 @@
 if defined?(Redlock)
   class Redlock::PooledClient < Struct.new(:redis_connection_pool)
 
-    def lock *args, &block
-      with_client{ |client| client.lock(*args, &block) }
+    def lock *args
+      unless block_given?
+          with_client{ |client| client.lock(*args) }
+      else
+          begin
+            lock = with_client{ |client| client.lock(*args) }
+            yield lock
+          ensure
+            self.unlock(lock)
+          end
+      end
     end
 
     def unlock *args, &block
